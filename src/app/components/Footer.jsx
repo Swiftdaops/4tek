@@ -50,7 +50,7 @@ export default function Footer() {
         aria-hidden="true"
         width="1500"
         height="1500"
-          className="absolute left-1/2 bottom-0 opacity-30 blur-[6px] -translate-x-1/2 translate-y-8 pointer-events-none object-contain z-0 w-[900px] sm:w-[1100px] md:w-[1200px] lg:w-[1400px]"
+          className="absolute left-1/2 bottom-0 opacity-30 blur-[6px] -translate-x-1/2 translate-y-[52px] pointer-events-none object-contain z-0 w-[900px] sm:w-[1100px] md:w-[1200px] lg:w-[1400px]"
       />
 
       {/* semi-transparent overlay for contrast (above image, below content) */}
