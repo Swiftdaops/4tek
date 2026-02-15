@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function HeroSection() {
   return (
-    <section className="gradient min-h-screen flex flex-col justify-center items-start px-6 md:px-12 text-stone-950">
+    <section className="gradient pt-24 md:pt-32 min-h-screen flex flex-col justify-center items-start px-6 md:px-12 text-stone-950">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
