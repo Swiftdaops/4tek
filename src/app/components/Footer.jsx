@@ -48,13 +48,13 @@ export default function Footer() {
         src="https://res.cloudinary.com/dnitzkowt/image/upload/v1771098882/WhatsApp_Image_2026-02-11_at_12.28.44_AM__1_-removebg-preview_hgovlj.png"
         alt="decorative background"
         aria-hidden="true"
-        width="2000"
-        height="2000"
-        className="absolute left-0 bottom-0 w-[2000px] h-[2000px] opacity-30 blur-[6px] -translate-x-24 translate-y-8 pointer-events-none object-contain z-0"
+        width="1500"
+        height="1500"
+        className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-8 opacity-30 blur-[6px] pointer-events-none object-contain z-0 w-[900px] sm:w-[1100px] md:w-[1200px] lg:w-[1400px]"
       />
 
       {/* semi-transparent overlay for contrast (above image, below content) */}
-      <div className="absolute inset-0 bg-black/30 pointer-events-none z-10" aria-hidden />
+      <div className="absolute inset-0  pointer-events-none z-10" aria-hidden />
 
       <div className="container mx-auto px-6 max-w-6xl relative z-20">
 
@@ -70,7 +70,7 @@ export default function Footer() {
               </span>
             </Link>
 
-            <p className="text-stone-600 text-sm leading-relaxed max-w-xs mb-6">
+            <p className="text-white text-sm leading-relaxed max-w-xs mb-6">
   We partner with global brands to optimize customer experience through
   precision-built commerce systems, automation architecture, and scalable software.
 </p>
