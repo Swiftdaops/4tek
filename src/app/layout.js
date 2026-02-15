@@ -5,6 +5,7 @@ import TransitionWrapper from "./components/TransitionWrapper";
 import Footer from "./components/Footer";
 import StructuredData from "./components/JsonLd";
 import ChatWidget from "./components/ChatWidget";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
@@ -101,6 +102,7 @@ export default function RootLayout({ children }) {
         <TransitionWrapper>{children}</TransitionWrapper>
         <Footer />
         <ChatWidget />
+        <Analytics />
       </body>
     </html>
   );
