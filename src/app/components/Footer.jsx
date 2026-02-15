@@ -45,12 +45,12 @@ export default function Footer() {
     >
       {/* decorative background image placed behind left content */}
       <img
-        src="https://res.cloudinary.com/dnitzkowt/image/upload/v1771098882/WhatsApp_Image_2026-02-11_at_12.28.44_AM__1_-removebg-preview_hgovlj.png"
+        src="https://res.cloudinary.com/dnitzkowt/image/upload/v1771118038/Gemini_Generated_Image_m53huzm53huzm53h_e69ixe.png"
         alt="decorative background"
         aria-hidden="true"
-        width="1500"
-        height="1500"
-          className="absolute left-1/2 bottom-0 opacity-30 -translate-x-1/2 translate-y-10 pointer-events-none object-contain z-0 w-[900px] sm:w-[1100px] md:w-[1200px] lg:w-[1400px]"
+        width="1024"
+        height="1024"
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-30 pointer-events-none object-contain z-0 w-[320px] sm:w-[512px] md:w-[720px] lg:w-[1024px]"
       />
 
       {/* semi-transparent overlay for contrast (above image, below content) */}
