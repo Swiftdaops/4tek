@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Full SaaS System Diagram">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#2b5876"/>
+      <stop offset="1" stop-color="#4e4376"/>
+    </linearGradient>
+    <style>
+      .bg{fill:#ffffff;}
+      .box{fill:url(#g);opacity:.10;stroke:#2b5876;stroke-width:3;}
+      .t{font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; fill:#0f172a;}
+      .h{font-weight:800;font-size:44px;}
+      .l{font-weight:700;font-size:28px;}
+      .s{font-weight:600;font-size:20px;fill:#334155;}
+      .arrow{stroke:#334155;stroke-width:6;fill:none;stroke-linecap:round;stroke-linejoin:round;opacity:.9}
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1600" height="900" rx="24"/>
+
+  <text class="t h" x="80" y="110">Operational SaaS System Blueprint</text>
+  <text class="t s" x="80" y="155">Frontend → API Layer → Database → Automation → Payments → Analytics</text>
+
+  <!-- Boxes -->
+  <rect class="box" x="80"  y="250" width="240" height="120" rx="18"/>
+  <rect class="box" x="380" y="250" width="240" height="120" rx="18"/>
+  <rect class="box" x="680" y="250" width="240" height="120" rx="18"/>
+  <rect class="box" x="980" y="250" width="240" height="120" rx="18"/>
+  <rect class="box" x="1280" y="250" width="240" height="120" rx="18"/>
+
+  <rect class="box" x="380" y="450" width="540" height="150" rx="18"/>
+  <rect class="box" x="980" y="450" width="540" height="150" rx="18"/>
+
+  <!-- Labels -->
+  <text class="t l" x="120" y="320">Frontend</text>
+  <text class="t s" x="120" y="352">Storefront / Admin</text>
+
+  <text class="t l" x="420" y="320">API Layer</text>
+  <text class="t s" x="420" y="352">Auth • Rules • Webhooks</text>
+
+  <text class="t l" x="720" y="320">Database</text>
+  <text class="t s" x="720" y="352">Orders • Users • Catalog</text>
+
+  <text class="t l" x="1020" y="320">Automation</text>
+  <text class="t s" x="1020" y="352">Sync • Messaging • Ops</text>
+
+  <text class="t l" x="1320" y="320">Payments</text>
+  <text class="t s" x="1320" y="352">Gateways • Subscriptions</text>
+
+  <text class="t l" x="420" y="520">Observability</text>
+  <text class="t s" x="420" y="555">Performance • Errors • Logs</text>
+
+  <text class="t l" x="1020" y="520">Analytics Loop</text>
+  <text class="t s" x="1020" y="555">Attribution • A/B • Insights</text>
+
+  <!-- Arrows (top row) -->
+  <path class="arrow" d="M320 310 H360"/>
+  <path class="arrow" d="M620 310 H660"/>
+  <path class="arrow" d="M920 310 H960"/>
+  <path class="arrow" d="M1220 310 H1260"/>
+
+  <!-- Arrow down to observability/analytics -->
+  <path class="arrow" d="M500 370 V430"/>
+  <path class="arrow" d="M1100 370 V430"/>
+
+  <!-- Arrow between observability and analytics -->
+  <path class="arrow" d="M920 525 H960"/>
+
+</svg>
