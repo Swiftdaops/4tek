@@ -98,27 +98,28 @@ const salesData = [
 
 
   return (
-    <section
-      className="relative min-h-screen w-full overflow-hidden px-6 pt-32 pb-20"
-      style={{
-        backgroundImage:
-          "url('https://res.cloudinary.com/dnitzkowt/image/upload/v1771120347/Gemini_Generated_Image_3l1res3l1res3l1r__1_-removebg-preview_le9f2i.png')",
-        backgroundPosition: 'center',
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-      }}
-    >
+    <section className="relative min-h-screen w-full overflow-hidden gradient px-6 pt-32 pb-20">
       {/* Background Decorative Element (moved behind overlay) */}
       <div className="absolute top-0 left-1/2 -z-20 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-blue-500/5 blur-[120px]" />
 
+      {/* Background image layer above the gradient but below overlay */}
+      <div
+        className="absolute inset-0 bg-center bg-cover bg-no-repeat z-0"
+        style={{
+          backgroundImage:
+            "url('https://res.cloudinary.com/dnitzkowt/image/upload/v1771120347/Gemini_Generated_Image_3l1res3l1res3l1r__1_-removebg-preview_le9f2i.png')",
+        }}
+        aria-hidden
+      />
+
       {/* Semi-opaque overlay for legibility */}
-      <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-0" aria-hidden />
+      <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-10" aria-hidden />
 
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-10 container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
+        className="relative z-20 container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
       >
         {/* Left Column: Content */}
         <div>
