@@ -3,6 +3,40 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 
+function Logo({ src, name, color }) {
+  const isSeeklogo = typeof src === "string" && src.includes("seeklogo.com");
+
+  if (!src || isSeeklogo) {
+    const initials = (name || "?")
+      .split(/\s+/)
+      .map((s) => s[0])
+      .slice(0, 2)
+      .join("")
+      .toUpperCase();
+
+    return (
+      <div
+        aria-hidden
+        className="flex items-center justify-center rounded-full"
+        style={{
+          width: 48,
+          height: 48,
+          background: color || "#e5e7eb",
+          color: "white",
+          fontWeight: 700,
+          fontSize: 16,
+        }}
+      >
+        {initials}
+      </div>
+    );
+  }
+
+  return (
+    <motion.img src={src} alt={name} className="h-12 object-contain" draggable={false} />
+  );
+}
+
 const paymentCards = [
   {
     title: "Credit & Debit Cards",
@@ -175,11 +209,14 @@ export default function PaymentSystems() {
                     transition={{ duration: 0.8 }}
                     className="flex flex-col items-center space-y-2"
                   >
-                    <motion.img
+                    {/**
+                     * Avoid loading blocked external images (e.g. seeklogo.com)
+                     * If the URL appears to be blocked, render a styled initials badge instead.
+                     */}
+                    <Logo
                       src={card.apis[activeIndex[i]].url}
-                      alt={card.apis[activeIndex[i]].name}
-                      className="h-12 object-contain"
-                      draggable={false}
+                      name={card.apis[activeIndex[i]].name}
+                      color={card.apis[activeIndex[i]].color}
                     />
                     <motion.span className="text-sm font-semibold text-stone-700">
                       {card.apis[activeIndex[i]].name}
