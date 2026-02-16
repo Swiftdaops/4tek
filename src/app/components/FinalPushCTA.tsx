@@ -9,7 +9,7 @@ export default function FinalPushCTA() {
   )}`;
 
   return (
-    <section className="bg-indigo-600 py-20 px-6">
+    <section className=" gradient1 py-20 px-6">
       <motion.div
         className="max-w-3xl mx-auto text-center text-white"
         initial={{ opacity: 0, y: 20 }}

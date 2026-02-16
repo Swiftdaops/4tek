@@ -33,7 +33,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="font-bold text-lg">
           <span aria-hidden className="sr-only">4Tek</span>
-          <span className="logo-gradient inline-block">4Tek</span>
+          <span className="text-gradient inline-block">4Tek</span>
         </Link>
 
         {/* Desktop Links (icon pills) */}

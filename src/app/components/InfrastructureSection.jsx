@@ -13,29 +13,33 @@ const infrastructureProblems = [
 
 export default function InfrastructureSection() {
   return (
-    <section className="py-20 gradient">
-      <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-4xl md:text-5xl font-bold text-center text-stone-950 mb-12">
-          Precision-Built Software Infrastructure
-        </h2>
-        <p className="text-lg md:text-xl text-center text-gray-700 max-w-3xl mx-auto mb-12">
-          Your business is not generic. Your software shouldn't be either. We architect custom systems that reflect how your operations actually work — from internal workflows to customer-facing platforms. No bloated templates. No patchwork plugins. Just clean, scalable architecture designed around your logic. Built to scale from 100 users to 100,000 without breaking.
-        </p>
+    <>
+      <section className="py-20 gradient">
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-center text-stone-950 mt-12 mb-12">
+            <span className="text-gradient">4Tek</span> Software Infrastructure
+          </h2>
+          <p className="text-lg md:text-xl text-center text-gray-700 max-w-3xl mx-auto mb-12">
+            Your business is not generic. Your software shouldn't be either. We architect custom systems that reflect how your operations actually work — from internal workflows to customer-facing platforms. No bloated templates. No patchwork plugins. Just clean, scalable architecture designed around your logic. Built to scale from 100 users to 100,000 without breaking.
+          </p>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {infrastructureProblems.map((item) => (
-            <div key={item.title} className="card p-6 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300">
-              <h3 className="text-xl font-semibold text-indigo-600 mb-2">{item.title}</h3>
-              <p className="text-stone-700">{item.desc}</p>
-              <div className="mt-6">
-                <Link href="/get-started" className="inline-block bg-stone-950 text-white px-4 py-2 rounded-full text-sm font-bold hover:opacity-90 transition">
-                  Start a project
-                </Link>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {infrastructureProblems.map((item) => (
+              <div key={item.title} className="card p-6 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300">
+                <h3 className="text-xl font-semibold text-indigo-600 mb-2">{item.title}</h3>
+                <p className="text-stone-700">{item.desc}</p>
+                <div className="mt-6">
+                  <Link href="/get-started" className="inline-block bg-stone-950 text-white px-4 py-2 rounded-full text-sm font-bold hover:opacity-90 transition">
+                    Start a project
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+
+    </>
   );
 }

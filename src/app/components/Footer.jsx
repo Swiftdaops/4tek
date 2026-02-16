@@ -22,15 +22,14 @@ export default function Footer() {
       links: [
         { label: "API Documentation", href: "/docs" },
         { label: "Security Standards", href: "/security" },
-        { label: "System Audits", href: "/audit" },
-        { label: "Tech Stack", href: "/about#stack" },
+        { label: "Tech Stack", href: "/stack" },
       ],
     },
     {
       title: "Company",
       links: [
         { label: "About 4Tek", href: "/about" },
-        { label: "Case Studies", href: "/case-studies" },
+        { label: "Who needs Automations", href: "/who-this-is-for" },
         { label: "Contact Architects", href: "/get-started" },
         { label: "Privacy Policy", href: "/privacy" },
         { label: "HTML Sitemap", href: "/sitemap" },
@@ -45,7 +44,7 @@ export default function Footer() {
     >
       {/* decorative background image placed behind left content */}
       <img
-        src="https://res.cloudinary.com/dnitzkowt/image/upload/v1771118038/Gemini_Generated_Image_m53huzm53huzm53h_e69ixe.png"
+        src="https://res.cloudinary.com/dnitzkowt/image/upload/v1771120347/Gemini_Generated_Image_3l1res3l1res3l1r__1_-removebg-preview_le9f2i.png"
         alt="decorative background"
         aria-hidden="true"
         width="1024"
@@ -99,7 +98,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-stone-500 hover:text-blue-600 transition-colors"
+                      className="text-sm text-white hover:text-blue-600 transition-colors"
                     >
                       {link.label}
                     </Link>

@@ -25,19 +25,8 @@
   );
 }
 
-/* Section helper: apply to page sections so whitespace blends with the UI */
-.section {
-  background-color: var(--section-bg, #f3ecff); /* soft purple by default */
-}
 /* Text Gradient CSS */
-.text-gradient {
-  color: #155efc;
-  background-image: linear-gradient(45deg, #155efc , #9DBFE3 51%, #FFFFFF 50%, #6a8ca5 75%, #a5bdd5 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline-block;
-}
+
 .clip-hexagon {
   clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
 }
@@ -57,15 +46,7 @@
     border: 1px solid rgba(255, 255, 255, 0.125);
 }
 
-/* Animated logo gradient */
-.logo-gradient {
-  background-image: linear-gradient(90deg, #0ea5e9 0%, #3b82f6 50%, #0ea5e9 100%);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: logoShift 3s linear infinite;
-}
+
 
 @keyframes logoShift {
   from { background-position: 0% 50%; }
@@ -73,9 +54,11 @@
 }
 
 /* Text gradient variant for payment brand labels */
-.text-gradient2 {
-  color: #f5eedc;
-  background-image: linear-gradient(45deg, #f5eedc, #ebddc6 25%, #d4bf9f 50%, #a68c6c 75%, #755f3f 100%);
+/* Text Gradient CSS */
+/* Text Gradient CSS */
+.text-gradient {
+  color: #829ED9;
+  background-image: linear-gradient(45deg, #829ED9 , #131c31 76%, #E0E3D5 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

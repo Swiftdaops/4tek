@@ -1,16 +1,20 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useState } from "framer-motion";
 import { Shield, Zap, Server } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+
+const ConsultationModal = dynamic(() => import("./ConsultationModal"), { ssr: false });
 
 export default function TechStackSection() {
+  const [modalOpen, setModalOpen] = useState(false);
   const payments = [
-    { name: "Flutterwave", logo: "https://seeklogo.com/images/F/flutterwave-logo-5E4F7A2F7F-seeklogo.com.png" },
-    { name: "Paystack", logo: "https://seeklogo.com/images/P/paystack-logo-0AACE9AEDE-seeklogo.com.png" },
+    { name: "Flutterwave", logo: "https://res.cloudinary.com/dnitzkowt/image/upload/v1771123816/unnamed-removebg-preview_ba3qnv.png" },
+    { name: "Paystack", logo: "https://res.cloudinary.com/dnitzkowt/image/upload/v1771123892/download__1_-removebg-preview_1_ctcbcr.png" },
     { name: "PayPal", logo: "https://seeklogo.com/images/P/paypal-logo-57D5F56A0E-seeklogo.com.png" },
     { name: "Stripe", logo: "https://seeklogo.com/images/S/stripe-logo-1C92F0E6F4-seeklogo.com.png" },
     { name: "Visa", logo: "https://seeklogo.com/images/V/visa-logo-B9975ECA6A-seeklogo.com.png" },
@@ -106,8 +110,6 @@ export default function TechStackSection() {
             }}
           >
             {[
-              "flutterwave",
-              "paystack",
               "paypal",
               "stripe",
               "visa",
@@ -121,11 +123,8 @@ export default function TechStackSection() {
               "razorpay",
               "square",
               "wise",
-              "skrill",
               "payoneer",
-              "worldpay",
               "americanexpress",
-              "verve",
             ].map((brand, index) => (
               <SwiperSlide key={index}>
                 <div className="card flex flex-col items-center gap-4 p-6 rounded-xl  hover:shadow-md transition">
@@ -135,13 +134,17 @@ export default function TechStackSection() {
                     className="h-12 w-auto grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
                   />
                   <span className="text-gradient2 font-semibold text-lg capitalize text-center">{brand.replace(/([a-z])([A-Z])/g, '$1 $2')}</span>
-                  <Link href={`/get-started?provider=${brand}`} className="mt-2 inline-flex items-center gap-2 rounded-full border-2 border-blue-500 px-4 py-2 text-blue-500 font-semibold hover:bg-blue-50 transition">
+                  <button
+                    onClick={() => setModalOpen(true)}
+                    className="mt-2 inline-flex items-center gap-2 rounded-full border-2 border-blue-500 px-4 py-2 text-blue-500 font-semibold hover:bg-blue-50 transition"
+                  >
                     Integrate
-                  </Link>
+                  </button>
                 </div>
               </SwiperSlide>
             ))}
           </Swiper>
+          <ConsultationModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
         </div>
       </div>
     </section>

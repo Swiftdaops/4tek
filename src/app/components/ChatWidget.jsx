@@ -93,15 +93,15 @@ export default function ChatWidget() {
       )}
 
       {open && (
-        <div className="fixed bottom-6 right-6 w-[22rem] max-w-[calc(100vw-3rem)] bg-white shadow-2xl rounded-xl overflow-hidden">
-          <div className="flex items-center justify-between px-4 py-3 border-b">
-            <div className="text-sm font-semibold">4Tek Advisor</div>
+        <div className="fixed bottom-6 right-6 w-[22rem] max-w-[calc(100vw-3rem)] bg-sky-300 text-white shadow-2xl rounded-xl overflow-hidden">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-white/40">
+            <div className="text-sm font-semibold text-white">4Tek Advisor</div>
             <div className="flex items-center gap-3">
-              <div className="text-xs text-stone-500">{remaining}/{MAX_MESSAGES}</div>
+              <div className="text-xs text-white">{remaining}/{MAX_MESSAGES}</div>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="text-xs text-stone-600 hover:text-stone-900"
+                className="text-xs text-white hover:text-white/80"
               >
                 Close
               </button>
@@ -110,7 +110,7 @@ export default function ChatWidget() {
 
           <div className="h-80 overflow-y-auto px-4 py-3">
             {error && (
-              <div className="mb-3 rounded-lg border border-red-200 bg-red-50 p-2 text-xs text-red-800">
+              <div className="mb-3 rounded-lg border border-red-600 bg-red-700 p-2 text-xs text-white">
                 <div className="flex items-start justify-between gap-3">
                   <div className="leading-snug">{error}</div>
                   <div className="flex items-center gap-2">
@@ -146,7 +146,7 @@ export default function ChatWidget() {
                   className={
                     m.role === "user"
                       ? "inline-block bg-black text-white rounded-2xl px-3 py-2 mb-2 max-w-[90%]"
-                      : "inline-block bg-stone-100 text-stone-900 rounded-2xl px-3 py-2 mb-2 max-w-[90%]"
+                      : "inline-block bg-white/10 text-white rounded-2xl px-3 py-2 mb-2 max-w-[90%]"
                   }
                 >
                   {m.content}
@@ -156,14 +156,14 @@ export default function ChatWidget() {
 
             {limitReached && (
               <div className="text-left">
-                <p className="inline-block bg-amber-50 text-amber-900 rounded-2xl px-3 py-2 mb-2 max-w-[90%]">
+                <p className="inline-block bg-amber-700 text-white rounded-2xl px-3 py-2 mb-2 max-w-[90%]">
                   To continue, book a free consultation: <a className="underline" href="/get-started">/get-started</a>
                 </p>
               </div>
             )}
           </div>
 
-          <div className="p-3 border-t">
+          <div className="p-3 border-t border-white/10">
             <div className="flex gap-2">
               <input
                 value={input}
@@ -172,7 +172,7 @@ export default function ChatWidget() {
                   if (e.key === "Enter") sendMessage();
                 }}
                 disabled={sending || limitReached}
-                className="flex-1 border rounded-lg px-3 py-2 text-sm"
+                className="flex-1 border rounded-lg px-3 py-2 text-sm bg-white/10 border-white/20 text-white placeholder-white/70"
                 placeholder={limitReached ? "Book a consult to continue" : "Type your message…"}
               />
               <button
