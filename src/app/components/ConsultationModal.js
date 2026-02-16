@@ -17,6 +17,15 @@ import {
 
 export default function ConsultationModal({ isOpen, onClose }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [skipView, setSkipView] = useState(false);
+
+  const waMessage = encodeURIComponent(`Hi there! 👋
+
+I’m interested in learning more about your services and how you can help my business grow. Could we schedule a quick chat?
+
+I’d like to know more about: [Website / SEO / Automation / Payments / Other]
+
+Looking forward to your guidance!`);
   const [country, setCountry] = useState("Nigeria");
   const [currency, setCurrency] = useState("₦");
   const [sellingChannels, setSellingChannels] = useState(["Instagram"]);
@@ -34,6 +43,20 @@ export default function ConsultationModal({ isOpen, onClose }) {
   const [biggestChallenge, setBiggestChallenge] = useState("");
   const [subscribe, setSubscribe] = useState(true);
   const [isRequested, setIsRequested] = useState(false);
+
+  const whatsappNumber = "2348162084926";
+  const emailPrefill = encodeURIComponent(
+    `Hi,
+
+I would like to consult with you about your services and explore how they can benefit my business.
+
+Could you please guide me on which services would be most relevant for my needs?
+
+Looking forward to your reply.
+
+Best regards,
+[Your Name]`
+  );
 
   const toggleChannel = (channel) => {
     setSellingChannels((prev) =>
@@ -184,16 +207,18 @@ export default function ConsultationModal({ isOpen, onClose }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        console.error('Failed to send consultation', await res.text());
-        setIsSubmitting(false);
-        return;
-      } else {
-        console.log('Consultation sent');
-        setIsRequested(true);
-        setIsSubmitting(false);
+                  <a
+                    href={`https://wa.me/2348162084926?text=${waMessage}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-3 border-2 border-white text-white rounded-lg p-4 bg-transparent backdrop-blur-sm"
+                  >
+                    <MessageCircle className="w-6 h-6" />
+                    <div className="text-left">
+                      <div className="font-bold">WhatsApp</div>
+                      <div className="text-xs opacity-80">Start a chat with our team</div>
+                    </div>
+                  </a>
       }
 
       // Simulate adding email to a mailing list (store in localStorage)
@@ -278,14 +303,53 @@ export default function ConsultationModal({ isOpen, onClose }) {
 
             <div className="mb-6">
               <button
-                onClick={onClose}
+                onClick={() => setSkipView(true)}
+                type="button"
                 className="gradient btn inline-flex items-center gap-2 text-white font-semibold py-2 px-4 rounded-full"
               >
                 Skip the form
               </button>
             </div>
 
-            <form className="space-y-5" onSubmit={handleSubmit}>
+            {skipView ? (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <a
+                    href={`https://wa.me/${whatsappNumber}?text=${waMessage}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-3 border-2 border-white text-white rounded-lg p-4 bg-transparent backdrop-blur-sm"
+                  >
+                    <MessageCircle className="w-6 h-6" />
+                    <div className="text-left">
+                      <div className="font-bold">WhatsApp</div>
+                      <div className="text-xs opacity-80">Start a chat with our team</div>
+                    </div>
+                  </a>
+
+                  <a
+                    href={`mailto:hello@4tek.dev?subject=${encodeURIComponent('Consultation request')}&body=${emailPrefill}`}
+                    className="flex items-center justify-center gap-3 border-2 border-white text-white rounded-lg p-4 bg-transparent backdrop-blur-sm"
+                  >
+                    <Mail className="w-6 h-6" />
+                    <div className="text-left">
+                      <div className="font-bold">Email</div>
+                    </div>
+                  </a>
+                </div>
+
+                <div className="text-center">
+                  <button
+                    type="button"
+                    onClick={() => setSkipView(false)}
+                    className="underline text-sm text-white"
+                  >
+                    Back to form
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <form className="space-y-5" onSubmit={handleSubmit}>
 
               {/* Full Name */}
               <input
@@ -352,16 +416,15 @@ export default function ConsultationModal({ isOpen, onClose }) {
                       {channelIcon(ch)}
                       <span className="select-none">{ch}</span>
                     </label>
-                  ))}
-                </div>
-              </div>
-
-              {sellingChannels.includes("Other") && (
-                <div className="w-full">
-                  <label className="block mb-2 text-sm font-medium text-white">Please specify where you sell</label>
-                  <input
-                    type="text"
-                    value={customSellingOther}
+                  <a
+                    href="mailto:hello@4tek.dev"
+                    className="flex items-center justify-center gap-3 border-2 border-white text-white rounded-lg p-4 bg-transparent backdrop-blur-sm"
+                  >
+                    <Mail className="w-6 h-6" />
+                    <div className="text-left">
+                      <div className="font-bold">Email</div>
+                    </div>
+                  </a>
                     onChange={(e) => setCustomSellingOther(e.target.value)}
                     placeholder="e.g. Local markets, Niche marketplace"
                     className="w-full border rounded-lg p-3"
@@ -486,6 +549,7 @@ export default function ConsultationModal({ isOpen, onClose }) {
                 </button>
               )}
             </form>
+            )}
 
             {/* Close Button */}
             <button
