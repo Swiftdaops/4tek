@@ -86,14 +86,14 @@ export default function ChatWidget() {
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="fixed bottom-6 right-6 bg-black text-white px-4 py-3 rounded-full shadow-2xl"
+          className="fixed bottom-6 right-6 bg-black/75 backdrop-blur-sm text-white px-4 py-3 rounded-full shadow-2xl"
         >
           Chat with 4Tek
         </button>
       )}
 
       {open && (
-        <div className="fixed bottom-6 right-6 w-[22rem] max-w-[calc(100vw-3rem)] bg-sky-300 text-white shadow-2xl rounded-xl overflow-hidden">
+        <div className="fixed bottom-6 right-6 w-[22rem] max-w-[calc(100vw-3rem)] bg-stone-900/40 backdrop-blur-md text-white shadow-2xl rounded-xl overflow-hidden z-[9999]">
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/40">
             <div className="text-sm font-semibold text-white">4Tek Advisor</div>
             <div className="flex items-center gap-3">
@@ -145,8 +145,8 @@ export default function ChatWidget() {
                 <p
                   className={
                     m.role === "user"
-                      ? "inline-block bg-black text-white rounded-2xl px-3 py-2 mb-2 max-w-[90%]"
-                      : "inline-block bg-white/10 text-white rounded-2xl px-3 py-2 mb-2 max-w-[90%]"
+                      ? "inline-block bg-black/90 text-white rounded-2xl px-3 py-2 mb-2 max-w-[90%]"
+                      : "inline-block bg-white/10 backdrop-blur-sm text-white rounded-2xl px-3 py-2 mb-2 max-w-[90%]"
                   }
                 >
                   {m.content}
@@ -172,7 +172,7 @@ export default function ChatWidget() {
                   if (e.key === "Enter") sendMessage();
                 }}
                 disabled={sending || limitReached}
-                className="flex-1 border rounded-lg px-3 py-2 text-sm bg-white/10 border-white/20 text-white placeholder-white/70"
+                className="flex-1 border rounded-lg px-3 py-2 text-sm bg-white/10 border-white/20 text-white placeholder-white/70 backdrop-blur-sm"
                 placeholder={limitReached ? "Book a consult to continue" : "Type your message…"}
               />
               <button

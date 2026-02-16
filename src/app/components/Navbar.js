@@ -48,10 +48,7 @@ export default function Navbar() {
               <span className="ml-0 text-sm md:text-base lg:text-base font-semibold md:font-bold whitespace-nowrap overflow-hidden truncate max-w-22.5 md:max-w-35 lg:max-w-45 text-blue-500">Solution</span>
             </Link>
 
-            <Link href="/security" className="inline-flex items-center gap-2 px-3 py-1 rounded-full border-2 border-white/60 bg-white/5 transition hover:opacity-90">
-              <Shield className="w-4 h-4 shrink-0" />
-              <span className="ml-0 text-sm md:text-base lg:text-base font-semibold md:font-bold whitespace-nowrap overflow-hidden truncate max-w-22.5 md:max-w-35 lg:max-w-45 text-blue-500">Security</span>
-            </Link>
+           
           </div>
 
           {/* Mobile Hamburger */}
@@ -78,15 +75,12 @@ export default function Navbar() {
               <span className="text-base font-semibold md:font-bold text-blue-500">About</span>
             </Link>
 
-            <Link href="/solution" onClick={() => setOpen(false)} className="inline-flex items-center gap-2 px-3 py-2 rounded-full border-2 border-white/60 bg-white/5 w-full justify-center">
+            <Link href="/solutions" onClick={() => setOpen(false)} className="inline-flex items-center gap-2 px-3 py-2 rounded-full border-2 border-white/60 bg-white/5 w-full justify-center">
               <Layers className="w-4 h-4 shrink-0" />
               <span className="text-base font-semibold md:font-bold text-blue-500">Solution</span>
             </Link>
 
-            <Link href="/security" onClick={() => setOpen(false)} className="inline-flex items-center gap-2 px-3 py-2 rounded-full border-2 border-white/60 bg-white/5 w-full justify-center">
-              <Shield className="w-4 h-4 shrink-0" />
-              <span className="text-base font-semibold md:font-bold text-blue-500">Security</span>
-            </Link>
+            
           </motion.div>
         )}
       </AnimatePresence>

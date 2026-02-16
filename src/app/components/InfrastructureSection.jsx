@@ -1,4 +1,9 @@
-import Link from "next/link";
+"use client";
+
+import React, { useState } from "react";
+import dynamic from "next/dynamic";
+
+const ConsultationModal = dynamic(() => import("./ConsultationModal"), { ssr: false });
 
 const infrastructureProblems = [
   { title: "Hotel Management Systems", desc: "Direct online bookings, automated invoicing, real-time availability to prevent double-bookings." },
@@ -12,6 +17,7 @@ const infrastructureProblems = [
 ];
 
 export default function InfrastructureSection() {
+  const [modalOpen, setModalOpen] = useState(false);
   return (
     <>
       <section className="py-20 gradient">
@@ -28,14 +34,20 @@ export default function InfrastructureSection() {
               <div key={item.title} className="card p-6 rounded-2xl shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300">
                 <h3 className="text-xl font-semibold text-indigo-600 mb-2">{item.title}</h3>
                 <p className="text-stone-700">{item.desc}</p>
-                <div className="mt-6">
-                  <Link href="/get-started" className="inline-block bg-stone-950 text-white px-4 py-2 rounded-full text-sm font-bold hover:opacity-90 transition">
-                    Start a project
-                  </Link>
-                </div>
               </div>
             ))}
           </div>
+
+          <div className="mt-6 text-center">
+            <button
+              type="button"
+              onClick={() => setModalOpen(true)}
+              className="inline-block bg-stone-950 text-white px-4 py-2 rounded-full text-sm font-bold hover:opacity-90 transition"
+            >
+              Start a project
+            </button>
+          </div>
+          <ConsultationModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
         </div>
       </section>
 

@@ -57,7 +57,7 @@ export default function RootLayout({ children }) {
       </head>
       <body
         suppressHydrationWarning
-        className={`${jetBrainsMono.className} antialiased bg-stone-50 text-stone-950`}
+        className={`${jetBrainsMono.className} antialiased  text-stone-950`}
       >
         <Navbar />
         <TransitionWrapper>{children}</TransitionWrapper>

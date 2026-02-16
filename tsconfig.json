@@ -34,7 +34,7 @@
     "**/*.mts",
     "**/*.ts",
     "**/*.tsx"
-, "src/app/components/AboutOfferSection.jsx"  ],
+, "src/app/components/AboutOfferSection.jsx", "src/app/components/JsonLd.jsx"  ],
   "exclude": [
     "node_modules"
   ]

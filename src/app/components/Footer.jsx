@@ -12,21 +12,19 @@ export default function Footer() {
       title: "Solutions",
       links: [
         { label: "Automation", href: "/solutions/whatsapp-automation" },
-        { label: "Inventory Systems", href: "/solutions/inventory-logic" },
-        { label: "Payment Systems", href: "/solutions/admin-dashboards" },
         { label: "SaaS Infrastructure", href: "/saas" },
         { label: "Infrastructure", href: "/solutions/infrastructure" },
         { label: "Search Engineering", href: "/solutions/search-engineering" },
         { label: "Revenue Automation", href: "/solutions/revenue-automation" },
         { label: "Financial Systems", href: "/solutions/financial-systems" },
         { label: "Conversion Science", href: "/solutions/conversion-science" },
-        { label: "System Blueprint", href: "/solutions/system-blueprint" },
+        { label: "Payment Blueprint", href: "/solutions/system-blueprint" },
       ],
     },
     {
       title: "Engineering",
       links: [
-        { label: "API Documentation", href: "/docs" },
+        { label: "API Documentation", href: "/api-ecosystem" },
         { label: "Security Standards", href: "/security" },
         { label: "Tech Stack", href: "/stack" },
       ],
