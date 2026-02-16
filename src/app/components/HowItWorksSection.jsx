@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useState } from "framer-motion";
+import React, { useState } from "react";
 import { Shield, Zap, Server } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";

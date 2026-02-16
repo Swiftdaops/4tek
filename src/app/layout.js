@@ -21,13 +21,7 @@ export const metadata = {
   description: "Engineering autonomous revenue engines and 3-click checkout systems. Registered software development company specializing in e-commerce automation.",
   keywords: ["Software Development Nigeria", "E-commerce Automation", "WhatsApp API Integration", "Next.js Developers", "Revenue Engines"],
   
-  // THE 10/10 ADDITION: Theme & Mobile UI
-  themeColor: "#acb6e5", 
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
+  // Theme & Mobile UI moved to `viewport` export per Next.js
 
   authors: [{ name: "4Tek Engineering Team" }],
   creator: "4Tek",
@@ -74,3 +68,10 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
+export const viewport = {
+  themeColor: "#acb6e5",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
