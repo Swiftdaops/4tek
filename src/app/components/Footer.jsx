@@ -15,6 +15,12 @@ export default function Footer() {
         { label: "Inventory Systems", href: "/solutions/inventory-logic" },
         { label: "Payment Systems", href: "/solutions/admin-dashboards" },
         { label: "SaaS Infrastructure", href: "/saas" },
+        { label: "Infrastructure", href: "/solutions/infrastructure" },
+        { label: "Search Engineering", href: "/solutions/search-engineering" },
+        { label: "Revenue Automation", href: "/solutions/revenue-automation" },
+        { label: "Financial Systems", href: "/solutions/financial-systems" },
+        { label: "Conversion Science", href: "/solutions/conversion-science" },
+        { label: "System Blueprint", href: "/solutions/system-blueprint" },
       ],
     },
     {
