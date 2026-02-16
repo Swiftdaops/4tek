@@ -63,7 +63,7 @@ export default function SearchEngineering() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className="p-8 border border-stone-200 bg-white hover:shadow-2xl hover:border-blue-200 transition-all group"
+                className="p-8 border border-stone-200 bg-white/80 backdrop-blur-sm hover:shadow-2xl hover:border-blue-200 transition-all group relative z-20"
               >
                 <div className="mb-6 p-3 bg-stone-50 w-fit rounded-xl group-hover:bg-blue-50 transition-colors">
                   {card.icon}
@@ -74,8 +74,8 @@ export default function SearchEngineering() {
             ))}
 
             {/* Metrics Flex Card */}
-            <div className="sm:col-span-2 card bg-stone-950 text-white p-8 flex flex-col md:flex-row items-center justify-between gap-8 overflow-hidden relative">
-               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/20 blur-[60px]" />
+            <div className="sm:col-span-2 card bg-stone-950/90 backdrop-blur-sm text-white p-8 flex flex-col md:flex-row items-center justify-between gap-8 overflow-hidden relative z-20">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/20 blur-[60px]" />
                <div className="relative z-10">
                   <h4 className="text-2xl font-bold mb-2">Technical SEO Perfection</h4>
                   <p className="text-stone-800 text-sm">
