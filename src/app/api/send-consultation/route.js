@@ -58,6 +58,25 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Failed to send email', detail: text }, { status: 502 });
     }
 
+    // Also notify admin via Telegram if configured
+    try {
+      const botToken = process.env.BOT_TOKEN;
+      const adminChat = process.env.ADMIN_TELEGRAM_CHAT_ID;
+      if (botToken && adminChat) {
+        const tgText = `New consultation request\n\nName: ${escapeHtml(body.fullName || '')}\nBusiness: ${escapeHtml(body.businessName || '')}\nEmail: ${escapeHtml(body.email || '')}\nPhone: ${escapeHtml(body.phone || '')}\nCountry: ${escapeHtml(body.country || '')}\nBudget: ${escapeHtml(typeof body.budget === 'string' ? body.budget : JSON.stringify(body.budget || ''))}\n\nMessage:\n${escapeHtml(body.biggestChallenge || '')}`;
+
+        await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ chat_id: adminChat, text: tgText }),
+        });
+      }
+    } catch (err) {
+      console.error('Failed to send Telegram notification for consultation', err);
+    }
+
     return NextResponse.json({ ok: true });
   } catch (err) {
     return NextResponse.json({ error: 'Server error', detail: String(err) }, { status: 500 });

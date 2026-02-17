@@ -9,7 +9,7 @@ export default function Footer() {
 
   const footerLinks = [
     {
-        { title: "Solutions",
+      title: "Solutions",
       links: [
         { label: "Automation", href: "/solutions#revenue-automation" },
         { label: "SaaS Infrastructure", href: "/saas" },

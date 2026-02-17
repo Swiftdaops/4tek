@@ -62,8 +62,42 @@ export async function POST(req) {
     );
   }
 
+  // Send a copy of the chat submission + AI reply to admin email (Resend)
+  (async function sendAdminNotification() {
+    try {
+      const RESEND_URL = 'https://api.resend.com/emails';
+      const apiKey = process.env.RESEND_API_KEY;
+      const fromAddr = process.env.RESEND_FROM || 'no-reply@upgradedbyobi.store';
+      const to = process.env.ADMIN_EMAIL || 'admin@upgradedbyobi.store';
+
+      if (!apiKey) return;
+
+      const html = `<div style="font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; color:#0f172a;"><div style="max-width:700px;margin:0 auto;padding:24px;border-radius:12px;background:#fff;border:1px solid #eef2ff;"><h2>AI Chat Submission</h2><p><strong>Message:</strong></p><div style="white-space:pre-wrap;background:#f8fafc;padding:12px;border-radius:8px">${escapeHtml(trimmed)}</div><p><strong>AI Reply:</strong></p><div style="white-space:pre-wrap;background:#f8fafc;padding:12px;border-radius:8px">${escapeHtml(reply)}</div><p><strong>IP:</strong> ${escapeHtml(ip)}</p><p><strong>Time:</strong> ${new Date().toISOString()}</p></div></div>`;
+
+      await fetch(RESEND_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({ from: fromAddr, to, subject: 'AI Chat Submission', html }),
+      });
+    } catch (err) {
+      console.error('Failed to send admin chat notification', err);
+    }
+  })();
+
   return NextResponse.json({
     reply,
     remaining: 10 - user.messagesUsed,
   });
+
+  function escapeHtml(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
 }

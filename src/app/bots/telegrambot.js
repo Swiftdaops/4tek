@@ -1,5 +1,3 @@
-"use client";
-
 require("dotenv").config();
 const { Telegraf, Markup, session } = require("telegraf");
 const mongoose = require("mongoose");
@@ -203,7 +201,26 @@ bot.on("text", async (ctx) => {
 });
 
 // ---------------------------
-// Launch Bot
+// Export webhook-friendly handlers
 // ---------------------------
-bot.launch();
-console.log("🤖 4Tek – Advisor AI Bot is live and running!");
+// Do not auto-launch the bot in serverless routes. Provide helpers instead:
+async function handleUpdate(update) {
+  try {
+    // Telegraf can process raw update objects
+    await bot.handleUpdate(update);
+  } catch (err) {
+    console.error('bot.handleUpdate error', err);
+  }
+}
+
+function startPolling() {
+  // Optional helper to start long-polling when running this file directly
+  bot.launch();
+  console.log("🤖 4Tek – Advisor AI Bot started (long-polling)");
+}
+
+module.exports = {
+  handleUpdate,
+  startPolling,
+  bot,
+};
