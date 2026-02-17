@@ -17,7 +17,7 @@ export default function AboutPageSections() {
 
   return (
     <>
-      <motion.section className="py-24 gradient text-white" initial="hidden" animate="visible" variants={sectionVariant} transition={{ duration: 0.6 }}>
+      <motion.section className="pt-16 pb-24 gradient text-white" initial="hidden" animate="visible" variants={sectionVariant} transition={{ duration: 0.6 }}>
         <div className="container mx-auto px-6 max-w-4xl text-center">
 
           <h2 className="text-4xl font-bold mb-6 text-white">

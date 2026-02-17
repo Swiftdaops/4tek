@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
+import ConsultationModal from "@/app/components/ConsultationModal";
 
 function Logo({ src, name, color }) {
   const isSeeklogo = typeof src === "string" && src.includes("seeklogo.com");
@@ -138,6 +139,7 @@ export default function PaymentSystems() {
     paymentCards.map(() => 0)
   );
   const [focused, setFocused] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -229,6 +231,14 @@ export default function PaymentSystems() {
             </div>
           ))}
         </div>
+
+        {/* CTA */}
+        <div className="max-w-7xl mx-auto text-center mt-12">
+          <button onClick={() => setModalOpen(true)} className="px-6 py-3 rounded-xl bg-white text-black font-bold hover:scale-105 transition">
+            Start a Project
+          </button>
+        </div>
+        <ConsultationModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
       </div>
     </section>
   );

@@ -4,6 +4,7 @@ import RevenueAutomation from "../components/RevenueAutomation";
 import FinancialSystemsSection from "../components/FinancialSystemsSection";
 import ConversionScienceSection from "../components/ConversionScienceSection";
 import SectionDivider from "../components/SectionDivider2";
+import CTASection from "../components/api/CTASection";
 
 export default function SolutionsPage() {
 	return (
@@ -17,7 +18,8 @@ export default function SolutionsPage() {
 			<FinancialSystemsSection />
 			<SectionDivider invert />
 			<ConversionScienceSection />
-            
+			<SectionDivider />
+			<CTASection />
 		</main>
 	);
 }
