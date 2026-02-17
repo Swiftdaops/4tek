@@ -1,8 +1,12 @@
 "use client";
 
 import { Database, CreditCard, Brain, BarChart3 } from "lucide-react";
+import { useState } from "react";
+import ConsultationModal from "@/app/components/ConsultationModal";
 
 export default function HeroSection() {
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <section className="gradient min-h-screen flex items-center justify-center text-center px-6 relative">
       <div className="absolute inset-0 opacity-20 grid grid-cols-4 gap-10 p-20">
@@ -25,13 +29,20 @@ export default function HeroSection() {
         </p>
 
         <div className="mt-10 flex justify-center gap-6">
-          <button className="px-8 py-3 bg-stone-950 text-white rounded-xl hover:scale-105 transition">
+          <button
+            onClick={() => {
+              const el = document.getElementById("categories");
+              if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
+            className="px-8 py-3 bg-stone-950 text-white rounded-xl hover:scale-105 transition"
+          >
             Explore the Ecosystem
           </button>
-          <button className="px-8 py-3 border border-stone-900 rounded-xl hover:bg-stone-900 hover:text-white transition">
+          <button onClick={() => setModalOpen(true)} className="px-8 py-3 border border-stone-900 rounded-xl hover:bg-stone-900 hover:text-white transition">
             Request Architecture Consultation
           </button>
         </div>
+        <ConsultationModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
       </div>
     </section>
   );

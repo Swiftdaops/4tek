@@ -24,7 +24,7 @@ export default function AuthSection() {
   return (
     <section
       id="auth"
-      className="py-24 px-6 bg-white"
+      className="py-24 px-6 gradient"
       aria-labelledby="auth-heading"
     >
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-start">

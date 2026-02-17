@@ -1,6 +1,6 @@
 export default function ProblemSection() {
   return (
-    <section className="py-24 px-6 bg-white text-center">
+    <section className="py-24 px-6 gradient text-center">
       <h2 className="text-4xl font-bold text-stone-950 mb-16">
         Your Business Is Only as Strong as Its Systems.
       </h2>

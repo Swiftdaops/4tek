@@ -40,6 +40,78 @@ export default function ConsultationModal({ isOpen, onClose }) {
   const [countrySearch, setCountrySearch] = useState("");
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
 
+  const DRAFT_KEY = "consultationDraft_v1";
+
+  // Load draft from localStorage when modal mounts
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if (!raw) return;
+      const draft = JSON.parse(raw);
+      if (!draft) return;
+
+      if (draft.fullName) setFullName(draft.fullName);
+      if (draft.businessName) setBusinessName(draft.businessName);
+      if (draft.phone) setPhone(draft.phone);
+      if (draft.email) setEmail(draft.email);
+      if (draft.sellingChannels) setSellingChannels(draft.sellingChannels);
+      if (draft.customSellingOther) setCustomSellingOther(draft.customSellingOther);
+      if (draft.websiteHas) setWebsiteHas(draft.websiteHas);
+      if (draft.biggestChallenge) setBiggestChallenge(draft.biggestChallenge);
+      if (draft.country) setCountry(draft.country);
+      if (draft.currency) setCurrency(draft.currency);
+      if (draft.selectedBudget) setSelectedBudget(draft.selectedBudget);
+      if (draft.customBudget) setCustomBudget(draft.customBudget);
+      if (draft.customCurrency) setCustomCurrency(draft.customCurrency);
+      if (typeof draft.subscribe === 'boolean') setSubscribe(draft.subscribe);
+    } catch (err) {
+      // ignore
+    }
+  }, []);
+
+  // Persist draft to localStorage whenever relevant fields change
+  useEffect(() => {
+    const payload = {
+      fullName,
+      businessName,
+      phone,
+      email,
+      sellingChannels,
+      customSellingOther,
+      websiteHas,
+      biggestChallenge,
+      country,
+      currency,
+      selectedBudget,
+      customBudget,
+      customCurrency,
+      subscribe,
+    };
+    try {
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(payload));
+    } catch (err) {
+      // ignore quota errors
+    }
+  }, [fullName, businessName, phone, email, sellingChannels, customSellingOther, websiteHas, biggestChallenge, country, currency, selectedBudget, customBudget, customCurrency, subscribe]);
+
+  const clearForm = () => {
+    setFullName("");
+    setBusinessName("");
+    setPhone("");
+    setEmail("");
+    setSellingChannels(["Instagram"]);
+    setCustomSellingOther("");
+    setWebsiteHas("");
+    setBiggestChallenge("");
+    setCountry("Nigeria");
+    setCurrency("₦");
+    setSelectedBudget("");
+    setCustomBudget("");
+    setCustomCurrency("");
+    setSubscribe(true);
+    try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
+  };
+
   const whatsappNumber = "2348162084926";
   const waMessage = encodeURIComponent(`Hi there! 👋\n\nI’m interested in learning more about your services...`);
   const emailPrefill = encodeURIComponent(`Hi,\n\nI would like to consult with you...`);
@@ -123,8 +195,8 @@ export default function ConsultationModal({ isOpen, onClose }) {
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-          <motion.div className="bg-[#1a1a1a] border border-white/10 rounded-2xl shadow-2xl w-full max-w-2xl p-6 md:p-8 overflow-y-auto max-h-[90vh]" initial={{ scale: 0.9, opacity: 0, y: 40 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.9, opacity: 0, y: 40 }}>
+        <motion.div onClick={() => onClose()} className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <motion.div onClick={(e) => e.stopPropagation()} className="bg-[#1a1a1a] border border-white/10 rounded-2xl shadow-2xl w-full max-w-2xl p-6 md:p-8 overflow-y-auto max-h-[90vh]" initial={{ scale: 0.9, opacity: 0, y: 40 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.9, opacity: 0, y: 40 }}>
             
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-white">Get Quotation</h2>
@@ -205,9 +277,12 @@ export default function ConsultationModal({ isOpen, onClose }) {
                   </div>
                 </div>
 
-                <button type="submit" disabled={isSubmitting} className={`w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition ${isRequested ? 'bg-green-600' : 'bg-white text-black hover:bg-gray-200'}`}>
-                  {isSubmitting ? 'Processing...' : isRequested ? <><Check /> Request Sent</> : <><Mail /> Request Consultation</>}
-                </button>
+                <div className="flex gap-3">
+                  <button type="button" onClick={clearForm} className="flex-1 py-3 rounded-xl border border-white/10 text-white/90 hover:bg-white/5 transition">Clear form</button>
+                  <button type="submit" disabled={isSubmitting} className={`flex-1 py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition ${isRequested ? 'bg-green-600' : 'bg-white text-black hover:bg-gray-200'}`}>
+                    {isSubmitting ? 'Processing...' : isRequested ? <><Check /> Request Sent</> : <><Mail /> Request Consultation</>}
+                  </button>
+                </div>
               </form>
             )}
           </motion.div>

@@ -16,9 +16,9 @@ export default function Footer() {
         { label: "Infrastructure", href: "/solutions/infrastructure" },
         { label: "Search Engineering", href: "/solutions/search-engineering" },
         { label: "Revenue Automation", href: "/solutions/revenue-automation" },
-        { label: "Financial Systems", href: "/solutions/financial-systems" },
+        { label: "Payments Systems", href: "/solutions/financial-systems" },
         { label: "Conversion Science", href: "/solutions/conversion-science" },
-        { label: "Payment Blueprint", href: "/solutions/system-blueprint" },
+        
       ],
     },
     {
@@ -34,7 +34,6 @@ export default function Footer() {
       links: [
         { label: "About 4Tek", href: "/about" },
         { label: "Who needs Automations", href: "/who-this-is-for" },
-        { label: "Contact Architects", href: "/get-started" },
         { label: "Privacy Policy", href: "/privacy" },
         { label: "HTML Sitemap", href: "/sitemap" },
       ],
