@@ -11,7 +11,7 @@ const infrastructureProblems = [
 
 export default function InfrastructureSection() {
   return (
-    <section className="py-20 bg-gray-50">
+    <section id="infrastructure" className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="text-4xl md:text-5xl font-bold text-center text-stone-950 mb-12">
           Precision-Built Software Infrastructure

@@ -9,16 +9,15 @@ export default function Footer() {
 
   const footerLinks = [
     {
-      title: "Solutions",
+        { title: "Solutions",
       links: [
-        { label: "Automation", href: "/solutions/whatsapp-automation" },
+        { label: "Automation", href: "/solutions#revenue-automation" },
         { label: "SaaS Infrastructure", href: "/saas" },
-        { label: "Infrastructure", href: "/solutions/infrastructure" },
-        { label: "Search Engineering", href: "/solutions/search-engineering" },
-        { label: "Revenue Automation", href: "/solutions/revenue-automation" },
-        { label: "Payments Systems", href: "/solutions/financial-systems" },
-        { label: "Conversion Science", href: "/solutions/conversion-science" },
-        
+        { label: "Infrastructure", href: "/solutions#infrastructure" },
+        { label: "Search Engineering", href: "/solutions#search-engineering" },
+        { label: "Revenue Automation", href: "/solutions#revenue-automation" },
+        { label: "Payments Systems", href: "/solutions#payment-systems" },
+        { label: "Conversion Science", href: "/solutions#conversion-science" },
       ],
     },
     {
@@ -35,7 +34,7 @@ export default function Footer() {
         { label: "About 4Tek", href: "/about" },
         { label: "Who needs Automations", href: "/who-this-is-for" },
         { label: "Privacy Policy", href: "/privacy" },
-        { label: "HTML Sitemap", href: "/sitemap" },
+        { label: "HTML Sitemap", href: "/sitemap.xml" },
       ],
     },
   ];

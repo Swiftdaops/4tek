@@ -41,7 +41,7 @@ export default function ConversionScienceSection() {
   ];
 
   return (
-    <section className="gradient relative py-28 px-6 md:px-12 overflow-hidden">
+    <section id="conversion-science" className="gradient relative py-28 px-6 md:px-12 overflow-hidden">
       <div className="max-w-6xl mx-auto text-stone-950 relative z-10">
 
         {/* Header Block */}
