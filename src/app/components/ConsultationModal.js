@@ -17,6 +17,7 @@ import {
 
 export default function ConsultationModal({ isOpen, onClose }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [sent, setSent] = useState(false);
   const [skipView, setSkipView] = useState(false);
   const [isRequested, setIsRequested] = useState(false);
 
@@ -169,22 +170,42 @@ export default function ConsultationModal({ isOpen, onClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isSubmitting) return;
+    if (sent) return; // prevent duplicate sends
     setIsSubmitting(true);
 
+    // read full chat log from localStorage (written by ChatWidget)
+    let chatLogFromStorage = [];
+    try {
+      chatLogFromStorage = JSON.parse(localStorage.getItem('chatLog_v1') || '[]');
+    } catch (e) {
+      chatLogFromStorage = [];
+    }
+
     const payload = {
-      fullName, businessName, phone, email, websiteHas, biggestChallenge, country,
-      sellingChannels: sellingChannels.includes("Other") ? [...sellingChannels.filter(s => s !== 'Other'), customSellingOther] : sellingChannels,
+      fullName,
+      businessName,
+      phone,
+      email,
+      websiteHas,
+      biggestChallenge,
+      country,
+      chatLog: chatLogFromStorage,
+      sellingChannels: sellingChannels.includes("Other") ? [...sellingChannels.filter((s) => s !== "Other"), customSellingOther] : sellingChannels,
       budget: country === "Other" ? `${customCurrency} ${customBudget}` : selectedBudget,
     };
 
     try {
-      const res = await fetch('/api/send-consultation', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/send-consultation", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      if (res.ok) setIsRequested(true);
+      if (res.ok) {
+        setIsRequested(true);
+        setSent(true);
+        try { localStorage.removeItem(DRAFT_KEY); } catch {}
+      } else {
+        console.error('Failed to send consultation', await res.text().catch(() => ''));}
     } catch (err) {
       console.error(err);
     } finally {

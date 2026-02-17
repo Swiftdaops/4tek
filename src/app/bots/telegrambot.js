@@ -21,6 +21,26 @@ const sessionSchema = new mongoose.Schema({
 
 const SessionModel = mongoose.model("BotSession", sessionSchema);
 
+// Profile for onboarding and tracking
+const profileSchema = new mongoose.Schema({
+  chatId: { type: Number, unique: true },
+  state: { type: String, default: "awaiting_name" },
+  name: String,
+  email: String,
+  forwarded: { type: Boolean, default: false },
+  convId: String,
+}, { timestamps: true });
+const ProfileModel = mongoose.model("TelegramProfile", profileSchema);
+
+// Conversation messages
+const convoSchema = new mongoose.Schema({
+  chatId: Number,
+  role: String,
+  text: String,
+  ts: { type: Date, default: Date.now },
+});
+const ConvoModel = mongoose.model("TelegramConvo", convoSchema);
+
 // Custom MongoDB session middleware
 const mongoSessionMiddleware = async (ctx, next) => {
   if (!ctx.from) return next();
@@ -189,15 +209,96 @@ bot.action(/web|seo|automation|payments/, async (ctx) => {
 // ---------------------------
 // Free Text Questions
 // ---------------------------
-bot.on("text", async (ctx) => {
-  ctx.reply("🤖 Thinking carefully...");
+// Utility: validate email
+function isEmail(s) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(s || "").trim());
+}
+
+// Helper to append convo
+async function appendConvo(chatId, role, text) {
   try {
-    const answer = await askAI(ctx.message.text, ctx);
-    ctx.reply(answer, mainMenu);
-  } catch (err) {
-    console.error(err);
-    ctx.reply("❌ Sorry, I couldn't process your question.", mainMenu);
+    await ConvoModel.create({ chatId, role, text });
+  } catch (e) {
+    console.error('appendConvo error', e);
   }
+}
+
+// get full convo for chatId
+async function getConvo(chatId) {
+  return ConvoModel.find({ chatId }).sort({ ts: 1 }).lean();
+}
+
+bot.on("text", async (ctx) => {
+  const chatId = ctx.from && ctx.chat && ctx.chat.id;
+  const text = (ctx.message && ctx.message.text) ? String(ctx.message.text).trim() : "";
+  if (!chatId) return;
+
+  // fetch or create profile
+  let profile = await ProfileModel.findOne({ chatId });
+  if (!profile) {
+    profile = await ProfileModel.create({ chatId, state: 'awaiting_name' });
+    await ctx.reply("Welcome to 4Tek support — what's your full name?");
+    return;
+  }
+
+  // onboarding flow
+  if (profile.state === 'awaiting_name') {
+    const name = text || 'Guest';
+    profile.name = name;
+    profile.state = 'awaiting_email';
+    await profile.save();
+    await appendConvo(chatId, 'user', `name: ${name}`);
+    await ctx.reply(`Thanks ${name}. Please provide your email address so we can follow up.`);
+    return;
+  }
+
+  if (profile.state === 'awaiting_email') {
+    if (!isEmail(text)) {
+      await ctx.reply("That doesn't look like an email. Please enter a valid email address (e.g. you@example.com).");
+      return;
+    }
+    profile.email = text;
+    profile.state = 'chatting';
+    await profile.save();
+    await appendConvo(chatId, 'user', `email: ${text}`);
+
+    // offer Request Live Chat button
+    await ctx.reply(
+      `Thanks — you're all set. Ask me anything. When you're ready for a human agent, press Request Live Chat.`,
+      Markup.inlineKeyboard([[Markup.button.callback('Request Live Chat', 'request_live')]])
+    );
+    return;
+  }
+
+  // chatting state
+  if (profile.state === 'chatting') {
+    // store user message
+    await appendConvo(chatId, 'user', text);
+    // reply via AI
+    try {
+      const history = await getConvo(chatId);
+      const res = await openai.chat.completions.create({
+        model: 'gpt-4',
+        messages: [
+          { role: 'system', content: `You are 4Tek's AI consultant. Provide step-by-step, easy-to-follow advice.` },
+          ...history.map(h => ({ role: h.role === 'user' ? 'user' : 'assistant', content: h.text })),
+          { role: 'user', content: text },
+        ],
+        temperature: 0.7,
+        max_tokens: 700,
+      });
+      const reply = res?.choices?.[0]?.message?.content || 'Thanks — we will get back to you shortly.';
+      await appendConvo(chatId, 'assistant', reply);
+      await ctx.reply(reply);
+    } catch (err) {
+      console.error('AI reply error', err);
+      await ctx.reply("Sorry, I'm having trouble generating a reply right now. An agent will assist you if you request Live Chat.");
+    }
+    return;
+  }
+
+  // fallback
+  await ctx.reply("Hello — please type /start to begin.");
 });
 
 // ---------------------------
@@ -207,6 +308,31 @@ bot.on("text", async (ctx) => {
 async function handleUpdate(update) {
   try {
     // Telegraf can process raw update objects
+    // Intercept callback_query for 'request_live' to forward convo to admin
+    if (update.callback_query && update.callback_query.data === 'request_live') {
+      const chatId = update.callback_query.message.chat.id;
+      try {
+        const profile = await ProfileModel.findOne({ chatId });
+        const conv = await getConvo(chatId);
+        const convId = `conv_${Date.now()}`;
+        // send to admin
+        const ADMIN_CHAT = process.env.ADMIN_TELEGRAM_CHAT_ID;
+        if (ADMIN_CHAT) {
+          const textLines = conv.map(m => `${m.role === 'user' ? 'User' : 'Bot'}: ${m.text}`).join('\n');
+          const payload = `<b>New Live Chat</b>\nConv: ${convId}\nName: ${profile?.name || '—'}\nEmail: ${profile?.email || '—'}\nChatId: ${chatId}\n\nConversation:\n${textLines.slice(0,3800)}`;
+          await bot.telegram.sendMessage(ADMIN_CHAT, payload, { parse_mode: 'HTML' });
+        }
+        // mark forwarded
+        if (profile) { profile.forwarded = true; profile.convId = convId; await profile.save(); }
+        // ack user
+        await bot.telegram.answerCbQuery(update.callback_query.id, 'Live chat requested — connecting you to support');
+        await bot.telegram.sendMessage(chatId, `Thanks — your chat has been forwarded to @fourtekhepdesk. An agent will join shortly.`);
+        return;
+      } catch (err) {
+        console.error('request_live handling error', err);
+      }
+    }
+
     await bot.handleUpdate(update);
   } catch (err) {
     console.error('bot.handleUpdate error', err);

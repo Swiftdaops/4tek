@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const MAX_MESSAGES = 10;
 
@@ -22,14 +22,48 @@ export default function ChatWidget() {
   const [limitReached, setLimitReached] = useState(false);
   const [error, setError] = useState("");
   const [retryPayload, setRetryPayload] = useState(null);
+  const typingIntervalRef = useRef(null);
+  const TYPING_SPEED = 24; // ms per character
+  const [lastInteraction, setLastInteraction] = useState(null);
+  const COOLDOWN_MS = 5 * 24 * 60 * 60 * 1000; // 5 days
 
   useEffect(() => {
-    if (open && messages.length === 0) {
-      setMessages(starter);
+    // restore saved chat if present
+    try {
+      const saved = JSON.parse(localStorage.getItem('chatLog_v1') || 'null');
+      if (Array.isArray(saved) && saved.length) {
+        setMessages(saved);
+      } else if (open && messages.length === 0) {
+        setMessages(starter);
+      }
+    } catch (e) {
+      if (open && messages.length === 0) setMessages(starter);
     }
+
+    // restore remaining and lastInteraction
+    try {
+      const rem = parseInt(localStorage.getItem('chatRemaining_v1'), 10);
+      if (!Number.isNaN(rem)) setRemaining(rem);
+    } catch (e) {}
+    try {
+      const ts = parseInt(localStorage.getItem('chatLast_v1'), 10);
+      if (!Number.isNaN(ts)) setLastInteraction(ts);
+    } catch (e) {}
   }, [open, messages.length, starter]);
 
+  // persist chat log so consultation modal can include full history
+  useEffect(() => {
+    try {
+      localStorage.setItem('chatLog_v1', JSON.stringify(messages));
+    } catch (e) {
+      // ignore
+    }
+  }, [messages]);
+
   async function sendMessage(payload) {
+    // respect cooldown: if lastInteraction within cooldown, disallow new sends
+    const now = Date.now();
+    if (lastInteraction && now - lastInteraction < COOLDOWN_MS) return;
     if (sending || limitReached) return;
 
     const messageToSend = (payload?.message ?? input).trim();
@@ -62,16 +96,52 @@ export default function ChatWidget() {
         return;
       }
 
-      setMessages([
-        ...newMessages,
-        {
-          role: "assistant",
-          content: data.reply || "Sorry — something went wrong.",
-        },
-      ]);
+      // Insert assistant placeholder and animate typing
+      const replyText = data.reply || "Sorry — something went wrong.";
+
+      // clear any existing typing interval
+      if (typingIntervalRef.current) {
+        clearInterval(typingIntervalRef.current);
+        typingIntervalRef.current = null;
+      }
+
+      let insertIndex = null;
+      setMessages((prev) => {
+        const next = [...newMessages];
+        insertIndex = next.length;
+        next.push({ role: "assistant", content: "" });
+        return next;
+      });
+
+      // Start typing animation
+      let pos = 0;
+      typingIntervalRef.current = setInterval(() => {
+        pos++;
+        setMessages((prev) => {
+          const copy = [...prev];
+          if (insertIndex == null || insertIndex >= copy.length) return prev;
+          copy[insertIndex] = { ...copy[insertIndex], content: replyText.slice(0, pos) };
+          return copy;
+        });
+        if (pos >= replyText.length) {
+          if (typingIntervalRef.current) {
+            clearInterval(typingIntervalRef.current);
+            typingIntervalRef.current = null;
+          }
+        }
+      }, TYPING_SPEED);
       if (typeof data.remaining === "number") setRemaining(data.remaining);
+      // persist remaining
+      try { localStorage.setItem('chatRemaining_v1', String(data.remaining || remaining)); } catch(e){}
       if (data.limitReached) setLimitReached(true);
       setInput("");
+      // mark last interaction (start cooldown) and persist messages
+      try {
+        const ts = Date.now();
+        setLastInteraction(ts);
+        localStorage.setItem('chatLast_v1', String(ts));
+      } catch (e) {}
+      try { localStorage.setItem('chatLog_v1', JSON.stringify(newMessages.concat({ role: 'assistant', content: replyText }))); } catch(e){}
       setSending(false);
     } catch (e) {
       setError("Network error. Please retry.");
@@ -79,6 +149,18 @@ export default function ChatWidget() {
       setSending(false);
     }
   }
+
+  // persist chat log whenever messages change
+  useEffect(() => {
+    try { localStorage.setItem('chatLog_v1', JSON.stringify(messages)); } catch (e) {}
+  }, [messages]);
+
+  // compute if user can send (cooldown)
+  const canSend = (() => {
+    if (!lastInteraction) return true;
+    const now = Date.now();
+    return now - lastInteraction >= COOLDOWN_MS;
+  })();
 
   return (
     <>
@@ -164,6 +246,11 @@ export default function ChatWidget() {
           </div>
 
           <div className="p-3 border-t border-white/10">
+            {!canSend && (
+              <div className="mb-2 text-xs text-yellow-300">
+                You can chat again on {new Date((lastInteraction || 0) + COOLDOWN_MS).toLocaleString()}.
+              </div>
+            )}
             <div className="flex gap-2">
               <input
                 value={input}
@@ -171,14 +258,20 @@ export default function ChatWidget() {
                 onKeyDown={(e) => {
                   if (e.key === "Enter") sendMessage();
                 }}
-                disabled={sending || limitReached}
+                disabled={!canSend || sending || limitReached}
                 className="flex-1 border rounded-lg px-3 py-2 text-sm bg-white/10 border-white/20 text-white placeholder-white/70 backdrop-blur-sm"
-                placeholder={limitReached ? "Book a consult to continue" : "Type your message…"}
+                placeholder={
+                  !canSend
+                    ? `Read-only chat. New chat available on ${new Date((lastInteraction || 0) + COOLDOWN_MS).toLocaleDateString()}`
+                    : limitReached
+                    ? "Book a consult to continue"
+                    : "Type your message…"
+                }
               />
               <button
                 type="button"
                 onClick={() => sendMessage()}
-                disabled={sending || limitReached}
+                disabled={!canSend || sending || limitReached}
                 className="bg-black text-white px-4 rounded-lg text-sm"
               >
                 {sending ? "…" : "Send"}

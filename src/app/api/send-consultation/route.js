@@ -33,6 +33,14 @@ export async function POST(req) {
             </tbody>
           </table>
           <div style="margin-top:18px;color:#6b7280;font-size:13px">This email was generated automatically by the website form.</div>
+          ${Array.isArray(body.chatLog) && body.chatLog.length ? `
+            <div style="margin-top:18px">
+              <h3 style="margin:0 0 8px;color:#0f172a;font-size:16px">Chat Log</h3>
+              <div style="background:#f9fafb;padding:12px;border-radius:8px;border:1px solid #eef2ff;color:#0f172a;font-size:13px;white-space:pre-wrap;">
+                ${escapeHtml(body.chatLog.map(m => `${m.role.toUpperCase()}: ${m.content}`).join('\n\n'))}
+              </div>
+            </div>
+          ` : ''}
         </div>
       </div>
     `;
@@ -63,7 +71,12 @@ export async function POST(req) {
       const botToken = process.env.BOT_TOKEN;
       const adminChat = process.env.ADMIN_TELEGRAM_CHAT_ID;
       if (botToken && adminChat) {
-        const tgText = `New consultation request\n\nName: ${escapeHtml(body.fullName || '')}\nBusiness: ${escapeHtml(body.businessName || '')}\nEmail: ${escapeHtml(body.email || '')}\nPhone: ${escapeHtml(body.phone || '')}\nCountry: ${escapeHtml(body.country || '')}\nBudget: ${escapeHtml(typeof body.budget === 'string' ? body.budget : JSON.stringify(body.budget || ''))}\n\nMessage:\n${escapeHtml(body.biggestChallenge || '')}`;
+        // include a short preview of the chat log in Telegram (first/last few messages)
+        const chatPreview = Array.isArray(body.chatLog) && body.chatLog.length
+          ? body.chatLog.slice(-6).map(m => `${m.role}: ${m.content}`).join('\n')
+          : '';
+
+        const tgText = `New consultation request\n\nName: ${escapeHtml(body.fullName || '')}\nBusiness: ${escapeHtml(body.businessName || '')}\nEmail: ${escapeHtml(body.email || '')}\nPhone: ${escapeHtml(body.phone || '')}\nCountry: ${escapeHtml(body.country || '')}\nBudget: ${escapeHtml(typeof body.budget === 'string' ? body.budget : JSON.stringify(body.budget || ''))}\n\nMessage:\n${escapeHtml(body.biggestChallenge || '')}\n\nChat preview:\n${escapeHtml(chatPreview)}`;
 
         await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
           method: 'POST',
