@@ -196,3 +196,8 @@ input[type="submit"] {
     @apply bg-background text-foreground;
   }
 }
+
+/* Prevent horizontal overflow that causes side whitespace and page shake */
+html, body, #__next, main {
+  overflow-x: hidden;
+}

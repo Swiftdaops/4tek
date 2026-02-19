@@ -8,7 +8,7 @@ export default function GetStartedPage() {
   const [open, setOpen] = useState(false);
 
   return (
-    <main className="min-h-screen gradient flex items-center justify-center px-6 py-20">
+    <main className="min-h-screen gradient1 flex items-center justify-center px-6 py-20">
       <ConsultationModal isOpen={open} onClose={() => setOpen(false)} />
       <div className="max-w-3xl  text-center">
         <h1 className="text-4xl lg:text-5xl font-black mb-4 text-stone-950">Get Started</h1>
