@@ -34,6 +34,7 @@ export default function ConsultationModal({ isOpen, onClose }) {
   const [currency, setCurrency] = useState("₦");
   const [draftHasCountry, setDraftHasCountry] = useState(false);
   const [userSetCountry, setUserSetCountry] = useState(false);
+  const [detectedGeo, setDetectedGeo] = useState(null);
   const [selectedBudget, setSelectedBudget] = useState("");
   const [customBudget, setCustomBudget] = useState("");
   const [customCurrency, setCustomCurrency] = useState("");
@@ -62,7 +63,8 @@ export default function ConsultationModal({ isOpen, onClose }) {
       if (draft.websiteHas) setWebsiteHas(draft.websiteHas);
       if (draft.biggestChallenge) setBiggestChallenge(draft.biggestChallenge);
       if (draft.country) setCountry(draft.country);
-      setDraftHasCountry(Boolean(draft.country));
+      // Treat a saved draft with the default value as "no meaningful draft"
+      setDraftHasCountry(Boolean(draft.country && draft.country !== "Nigeria"));
       if (draft.currency) setCurrency(draft.currency);
       if (draft.selectedBudget) setSelectedBudget(draft.selectedBudget);
       if (draft.customBudget) setCustomBudget(draft.customBudget);
@@ -98,11 +100,8 @@ export default function ConsultationModal({ isOpen, onClose }) {
     }
   }, [fullName, businessName, phone, email, sellingChannels, customSellingOther, websiteHas, biggestChallenge, country, currency, selectedBudget, customBudget, customCurrency, subscribe]);
 
-  // Detect user location via Vercel Location API (server-side headers or fallback IP lookup)
+  // Fetch detected geo on component mount so refresh re-detects IP
   useEffect(() => {
-    if (!isOpen) return;
-    if (draftHasCountry || userSetCountry) return;
-
     let mounted = true;
     (async () => {
       try {
@@ -112,22 +111,29 @@ export default function ConsultationModal({ isOpen, onClose }) {
         if (!mounted) return;
         const { country: detectedCountry, countryCode: detectedCode, currency: detectedCurrency } = data || {};
         if (!detectedCountry && !detectedCode) return;
-
         const found = COUNTRIES.find(c => c.name === detectedCountry || c.code === detectedCode);
-        if (found) {
-          setCountry(found.name);
-          setCurrency(found.currencySymbol || detectedCurrency || found.currencySymbol);
-        } else if (detectedCountry) {
-          setCountry(detectedCountry);
-          setCurrency(detectedCurrency || '$');
-        }
+        const geo = {
+          country: found ? found.name : detectedCountry,
+          countryCode: detectedCode,
+          currency: (found && found.currencySymbol) || detectedCurrency || '$',
+        };
+        setDetectedGeo(geo);
       } catch (err) {
         // ignore
       }
     })();
 
     return () => { mounted = false; };
-  }, [isOpen, draftHasCountry, userSetCountry]);
+  }, []);
+
+  // Auto-apply detected geo when modal opens (but don't override user or meaningful draft)
+  useEffect(() => {
+    if (!isOpen) return;
+    if (!detectedGeo) return;
+    if (draftHasCountry || userSetCountry) return;
+    setCountry(detectedGeo.country);
+    setCurrency(detectedGeo.currency);
+  }, [isOpen, detectedGeo, draftHasCountry, userSetCountry]);
 
   const clearForm = () => {
     setFullName("");
@@ -312,6 +318,12 @@ export default function ConsultationModal({ isOpen, onClose }) {
                 <div className="relative">
                   <label className="text-sm text-white/70">Country</label>
                   <input type="text" value={countrySearch || country} onFocus={() => setShowCountryDropdown(true)} onChange={(e) => { setCountrySearch(e.target.value); setUserSetCountry(true); }} className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white mt-1" />
+                  {detectedGeo && detectedGeo.country && detectedGeo.country !== country && !userSetCountry && (
+                    <div className="mt-2 flex items-center justify-between bg-white/5 p-2 rounded text-sm text-white">
+                      <div>Detected: <span className="font-bold">{detectedGeo.country}</span></div>
+                      <button type="button" onClick={() => { setCountry(detectedGeo.country); setCurrency(detectedGeo.currency); setUserSetCountry(true); }} className="ml-4 px-3 py-1 rounded bg-blue-600 text-white text-sm">Use detected</button>
+                    </div>
+                  )}
                   {showCountryDropdown && (
                     <div className="absolute w-full mt-1 bg-[#2a2a2a] border border-white/10 rounded-lg max-h-40 overflow-y-auto z-50">
                       {filteredCountries.map(c => (
