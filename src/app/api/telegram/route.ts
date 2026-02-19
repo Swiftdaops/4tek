@@ -53,8 +53,13 @@ export async function POST(req: Request) {
     // Attempt to pass the update into the local bot handlers if available
     try {
       const mod = await import('../../bots/telegrambot.js');
-      if (mod && typeof mod.handleUpdate === 'function') {
-        await mod.handleUpdate(update);
+      // Support both ESM namespace and CommonJS default export interop
+      const handler = (mod && typeof mod.handleUpdate === 'function') ? mod.handleUpdate : mod?.default?.handleUpdate;
+      if (typeof handler === 'function') {
+        console.log('Running local Telegram bot handler');
+        await handler(update);
+      } else {
+        console.log('No local Telegram bot handler found (mod keys: ', Object.keys(mod || {}), ')');
       }
     } catch (err) {
       // Non-fatal: bot handlers may not be available in this environment

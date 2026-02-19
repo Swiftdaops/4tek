@@ -32,6 +32,8 @@ export default function ConsultationModal({ isOpen, onClose }) {
   const [biggestChallenge, setBiggestChallenge] = useState("");
   const [country, setCountry] = useState("Nigeria");
   const [currency, setCurrency] = useState("₦");
+  const [draftHasCountry, setDraftHasCountry] = useState(false);
+  const [userSetCountry, setUserSetCountry] = useState(false);
   const [selectedBudget, setSelectedBudget] = useState("");
   const [customBudget, setCustomBudget] = useState("");
   const [customCurrency, setCustomCurrency] = useState("");
@@ -60,6 +62,7 @@ export default function ConsultationModal({ isOpen, onClose }) {
       if (draft.websiteHas) setWebsiteHas(draft.websiteHas);
       if (draft.biggestChallenge) setBiggestChallenge(draft.biggestChallenge);
       if (draft.country) setCountry(draft.country);
+      setDraftHasCountry(Boolean(draft.country));
       if (draft.currency) setCurrency(draft.currency);
       if (draft.selectedBudget) setSelectedBudget(draft.selectedBudget);
       if (draft.customBudget) setCustomBudget(draft.customBudget);
@@ -94,6 +97,37 @@ export default function ConsultationModal({ isOpen, onClose }) {
       // ignore quota errors
     }
   }, [fullName, businessName, phone, email, sellingChannels, customSellingOther, websiteHas, biggestChallenge, country, currency, selectedBudget, customBudget, customCurrency, subscribe]);
+
+  // Detect user location via Vercel Location API (server-side headers or fallback IP lookup)
+  useEffect(() => {
+    if (!isOpen) return;
+    if (draftHasCountry || userSetCountry) return;
+
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await fetch('/api/geo');
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!mounted) return;
+        const { country: detectedCountry, countryCode: detectedCode, currency: detectedCurrency } = data || {};
+        if (!detectedCountry && !detectedCode) return;
+
+        const found = COUNTRIES.find(c => c.name === detectedCountry || c.code === detectedCode);
+        if (found) {
+          setCountry(found.name);
+          setCurrency(found.currencySymbol || detectedCurrency || found.currencySymbol);
+        } else if (detectedCountry) {
+          setCountry(detectedCountry);
+          setCurrency(detectedCurrency || '$');
+        }
+      } catch (err) {
+        // ignore
+      }
+    })();
+
+    return () => { mounted = false; };
+  }, [isOpen, draftHasCountry, userSetCountry]);
 
   const clearForm = () => {
     setFullName("");
@@ -273,15 +307,15 @@ export default function ConsultationModal({ isOpen, onClose }) {
                   <option value="no" className="text-black">No, I need one</option>
                 </select>
 
-                <textarea placeholder="Your biggest challenge?" value={biggestChallenge} onChange={(e) => setBiggestChallenge(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white h-24" />
+                <textarea placeholder="Tell us a bit about your business and the challenges you're currently facing. We’ll help point you in the right direction." value={biggestChallenge} onChange={(e) => setBiggestChallenge(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white h-24" />
 
                 <div className="relative">
                   <label className="text-sm text-white/70">Country</label>
-                  <input type="text" value={countrySearch || country} onFocus={() => setShowCountryDropdown(true)} onChange={(e) => setCountrySearch(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white mt-1" />
+                  <input type="text" value={countrySearch || country} onFocus={() => setShowCountryDropdown(true)} onChange={(e) => { setCountrySearch(e.target.value); setUserSetCountry(true); }} className="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-white mt-1" />
                   {showCountryDropdown && (
                     <div className="absolute w-full mt-1 bg-[#2a2a2a] border border-white/10 rounded-lg max-h-40 overflow-y-auto z-50">
                       {filteredCountries.map(c => (
-                        <div key={c.code} onClick={() => { setCountry(c.name); setCurrency(c.currencySymbol); setShowCountryDropdown(false); setCountrySearch(""); }} className="p-3 hover:bg-white/10 cursor-pointer text-white flex justify-between">
+                        <div key={c.code} onClick={() => { setCountry(c.name); setCurrency(c.currencySymbol); setShowCountryDropdown(false); setCountrySearch(""); setUserSetCountry(true); }} className="p-3 hover:bg-white/10 cursor-pointer text-white flex justify-between">
                           <span>{c.name}</span> <span className="opacity-50">{c.currencySymbol}</span>
                         </div>
                       ))}
