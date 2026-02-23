@@ -153,7 +153,7 @@ export default function ConsultationModal({ isOpen, onClose }) {
     try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
   };
 
-  const whatsappNumber = "2348162084926";
+  const whatsappNumber = "2348069988120";
   const waMessage = encodeURIComponent(`Hi there! 👋\n\nI’m interested in learning more about your services...`);
   const emailPrefill = encodeURIComponent(`Hi,\n\nI would like to consult with you...`);
 

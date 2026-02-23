@@ -39,8 +39,8 @@ export default function SearchEngineering() {
                <span>SEARCH ENGINEERING</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-black tracking-tighter mb-8 leading-[1.1]">
-              If Google can't find you, <br />
-              <span className="text-blue-600">you don't exist online.</span>
+              If Google can&apos;t find you, <br />
+              <span className="text-blue-600">you don&apos;t exist online.</span>
             </h2>
             <p className="text-lg text-stone-600 mb-6 leading-relaxed">
               Most websites fail before they even load because they are built for eyes, not algorithms. At 4Tek, we engineer <strong>Search-First Architecture</strong>—structuring your site so Google indexes every page correctly and prioritizes your brand for relevant searches.
@@ -50,18 +50,19 @@ export default function SearchEngineering() {
             </p>
             <div className="p-6 bg-stone-50 border-l-4 border-blue-600 rounded-r-2xl">
               <p className="text-stone-900 font-bold italic">
-                "If Google suggests your brand as the number-one solution for what you do best, every searcher becomes a potential customer."
+                &ldquo;If Google suggests your brand as the number-one solution for what you do best, every searcher becomes a potential customer.&rdquo;
               </p>
             </div>
           </div>
 
           {/* Right Column: Cards & Metrics */}
-          <div className="lg:col-span-7 grid sm:grid-cols-2 gap-6">
+          <div className="lg:col-span-7 grid sm:grid-cols-2 gap-6 pt-12 lg:pt-16">
             {cards.map((card, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ amount: 0.6, once: true }}
                 transition={{ delay: i * 0.1 }}
                 className="p-8 border border-stone-200 bg-white/80 backdrop-blur-sm hover:shadow-2xl hover:border-blue-200 transition-all group relative z-20"
               >
@@ -74,7 +75,13 @@ export default function SearchEngineering() {
             ))}
 
             {/* Metrics Flex Card */}
-            <div className="sm:col-span-2 card bg-stone-950/90 backdrop-blur-sm text-white p-8 flex flex-col md:flex-row items-center justify-between gap-8 overflow-hidden relative z-20">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ amount: 0.6, once: true }}
+              transition={{ delay: cards.length * 0.1 }}
+              className="sm:col-span-2 card bg-stone-950/90 backdrop-blur-sm text-white p-8 flex flex-col md:flex-row items-center justify-between gap-8 overflow-hidden relative z-20"
+            >
               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/20 blur-[60px]" />
                <div className="relative z-10">
                   <h4 className="text-2xl font-bold mb-2">Technical SEO Perfection</h4>
@@ -96,7 +103,7 @@ export default function SearchEngineering() {
                     </div>
                   ))}
                </div>
-            </div>
+            </motion.div>
           </div>
 
         </div>

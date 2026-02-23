@@ -10,7 +10,7 @@ export default function FinalCTASection() {
         <p className="text-lg">
           Schedule a technical audit with 4Tek. Understand where your SaaS ecosystem can scale and improve revenue performance globally.
         </p>
-        <Link href="/contact" className="bg-white text-blue-600 px-8 py-4 rounded-lg font-bold hover:bg-stone-50 transition-colors">
+        <Link href="/get-started" className="bg-white text-blue-600 px-8 py-4 rounded-lg font-bold hover:bg-stone-50 transition-colors">
           Request Technical Review
         </Link>
       </motion.div>

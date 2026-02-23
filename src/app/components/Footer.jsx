@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Script from "next/script";
-import { Terminal, Github, Linkedin, Twitter } from "lucide-react";
+import { Terminal, Github, Linkedin, Twitter, Instagram } from "lucide-react";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -83,6 +83,12 @@ export default function Footer() {
               <Link href="https://linkedin.com" aria-label="LinkedIn">
                 <Linkedin className="w-5 h-5 text-stone-400 hover:text-blue-600 transition-colors" />
               </Link>
+              <Link
+                href="https://www.instagram.com/4tekhq?igsh=MWQ5MjRodzF1czFtYQ%3D%3D&utm_source=qr"
+                aria-label="Instagram"
+              >
+                <Instagram className="w-5 h-5 text-stone-400 hover:text-blue-600 transition-colors" />
+              </Link>
               <Link href="https://twitter.com" aria-label="Twitter">
                 <Twitter className="w-5 h-5 text-stone-400 hover:text-blue-600 transition-colors" />
               </Link>
@@ -143,7 +149,8 @@ export default function Footer() {
             sameAs: [
               "https://github.com/yourprofile",
               "https://linkedin.com/company/yourprofile",
-              "https://twitter.com/yourprofile"
+              "https://twitter.com/yourprofile",
+              "https://www.instagram.com/4tekhq?igsh=MWQ5MjRodzF1czFtYQ%3D%3D&utm_source=qr"
             ],
             description:
               "4Tek.dev builds scalable e-commerce infrastructure, automation systems, and SaaS platforms for growth-focused businesses.",

@@ -15,7 +15,7 @@ export default function GetStartedPage() {
 
         <p className="mb-6 text-lg text-stone-800">
           We design and deliver autonomous sales systems for brands that want reliable,
-          software-grade revenue. Choose how you'd like to begin and we'll guide the next steps.
+          software-grade revenue. Choose how you&apos;d like to begin and we&apos;ll guide the next steps.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">

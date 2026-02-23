@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 
 export default function FinalPushCTA() {
-  const whatsappNumber = "2348012345678"; // Replace with your WhatsApp number
+  const whatsappNumber = "2348069988120";
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
     "Hi 4Tek! I'm ready to audit my workflow and start a project."
   )}`;

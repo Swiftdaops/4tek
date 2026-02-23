@@ -2,35 +2,26 @@ import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://4tek.dev'
-  
-  // In a real app, you might fetch these slugs from a database
-  const solutionSlugs = [
-    'fashion-automation',
-    'food-ordering-systems',
-    'electronics-inventory-logic',
-    'whatsapp-dm-fatigue'
+  const lastModified = new Date()
+
+  // Keep this list aligned with actual `src/app/**/page.*` routes.
+  const staticPaths = [
+    '/',
+    '/about',
+    '/api-ecosystem',
+    '/contact',
+    '/get-started',
+    '/saas',
+    '/security',
+    '/solutions',
+    '/stack',
+    '/who-this-is-for',
   ]
 
-  const solutionUrls = solutionSlugs.map((slug) => ({
-    url: `${baseUrl}/solutions/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.8,
+  return staticPaths.map((path) => ({
+    url: `${baseUrl}${path === '/' ? '' : path}`,
+    lastModified,
+    changeFrequency: path === '/' ? ('daily' as const) : ('weekly' as const),
+    priority: path === '/' ? 1 : path === '/solutions' ? 0.9 : 0.7,
   }))
-
-  return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.5,
-    },
-    ...solutionUrls,
-  ]
 }

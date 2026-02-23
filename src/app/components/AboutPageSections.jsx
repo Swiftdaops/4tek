@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import ConsultationModal from "./ConsultationModal.js";
 import AboutOfferSection from "./AboutOfferSection.jsx";
 import SectionDivider from "./SectionDivider";
+import CTASection from "./api/CTASection.jsx";
 
 const sectionVariant = {
   hidden: { opacity: 0, y: 12 },
@@ -20,7 +21,7 @@ export default function AboutPageSections() {
       <motion.section className="pt-16 pb-24 gradient text-white" initial="hidden" animate="visible" variants={sectionVariant} transition={{ duration: 0.6 }}>
         <div className="container mx-auto px-6 max-w-4xl text-center">
 
-          <h2 className="text-4xl font-bold mb-6 text-white">
+          <h2 className="text-4xl font-bold mt-10 mb-6 text-white">
             Traditional Websites Were Built To Exist.
             <br />
             Not To Sell.
@@ -117,6 +118,7 @@ export default function AboutPageSections() {
       <SectionDivider className="-mt-1" colorFrom="#ffffff" colorTo="#603813" />
 
       <AboutOfferSection />
+      <CTASection/>
     </>
   );
 }

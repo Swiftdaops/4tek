@@ -20,7 +20,8 @@ export default function StructuredData() {
     },
     "sameAs": [
       "https://www.linkedin.com/company/4tek",
-      "https://twitter.com/4tek"
+      "https://twitter.com/4tek",
+      "https://www.instagram.com/4tekhq?igsh=MWQ5MjRodzF1czFtYQ%3D%3D&utm_source=qr"
     ]
   };
   return (

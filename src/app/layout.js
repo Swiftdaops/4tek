@@ -40,7 +40,6 @@ export const metadata = {
     title: "4Tek | E-commerce Automation Architects",
     images: ["/og-image.png"],
   },
-  alternates: { canonical: "https://4tek.dev" },
   robots: {
     index: true,
     follow: true,
