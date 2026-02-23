@@ -12,9 +12,10 @@ const ConsultationModal = dynamic(() => import("./ConsultationModal"), { ssr: fa
 
 export default function TechStackSection() {
   const [modalOpen, setModalOpen] = useState(false);
+  const proxied = (u) => `/api/image?url=${encodeURIComponent(u)}`;
   const payments = [
-    { name: "Flutterwave", logo: "https://res.cloudinary.com/dnitzkowt/image/upload/v1771123816/unnamed-removebg-preview_ba3qnv.png" },
-    { name: "Paystack", logo: "https://res.cloudinary.com/dnitzkowt/image/upload/v1771123892/download__1_-removebg-preview_1_ctcbcr.png" },
+    { name: "Flutterwave", logo: proxied("https://res.cloudinary.com/dnitzkowt/image/upload/v1771123816/unnamed-removebg-preview_ba3qnv.png") },
+    { name: "Paystack", logo: proxied("https://res.cloudinary.com/dnitzkowt/image/upload/v1771123892/download__1_-removebg-preview_1_ctcbcr.png") },
     { name: "PayPal", logo: "https://seeklogo.com/images/P/paypal-logo-57D5F56A0E-seeklogo.com.png" },
     { name: "Stripe", logo: "https://seeklogo.com/images/S/stripe-logo-1C92F0E6F4-seeklogo.com.png" },
     { name: "Visa", logo: "https://seeklogo.com/images/V/visa-logo-B9975ECA6A-seeklogo.com.png" },

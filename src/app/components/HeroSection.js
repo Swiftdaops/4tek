@@ -103,14 +103,18 @@ const salesData = [
       <div className="absolute top-0 left-1/2 -z-20 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-blue-500/5 blur-[120px]" />
 
       {/* Background image layer above the gradient but below overlay */}
-      <div
-        className="absolute inset-0 bg-center bg-cover bg-no-repeat z-0"
-        style={{
-          backgroundImage:
-            "url('https://res.cloudinary.com/dnitzkowt/image/upload/v1771120347/Gemini_Generated_Image_3l1res3l1res3l1r__1_-removebg-preview_le9f2i.png')",
-        }}
-        aria-hidden
-      />
+      {(() => {
+        const bg = `/api/image?url=${encodeURIComponent(
+          "https://res.cloudinary.com/dnitzkowt/image/upload/v1771120347/Gemini_Generated_Image_3l1res3l1res3l1r__1_-removebg-preview_le9f2i.png"
+        )}`;
+        return (
+          <div
+            className="absolute inset-0 bg-center bg-cover bg-no-repeat z-0"
+            style={{ backgroundImage: `url('${bg}')` }}
+            aria-hidden
+          />
+        );
+      })()}
 
       {/* Semi-opaque overlay for legibility */}
       <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-10" aria-hidden />
