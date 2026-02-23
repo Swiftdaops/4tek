@@ -5,8 +5,7 @@ import TransitionWrapper from "./components/TransitionWrapper";
 import Footer from "./components/Footer";
 import StructuredData from "./components/JsonLd";
 import ChatWidget from "./components/ChatWidget";
-import dynamic from "next/dynamic";
-const LazyAnalytics = dynamic(() => import("./components/LazyAnalytics"), { ssr: false });
+import LazyAnalytics from "./components/LazyAnalytics";
 
 const jetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -54,7 +53,7 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="icon" href="/favicon.ico" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <StructuredData />
       </head>
       <body
