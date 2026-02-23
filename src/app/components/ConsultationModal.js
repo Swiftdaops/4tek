@@ -276,7 +276,7 @@ export default function ConsultationModal({ isOpen, onClose }) {
                   <MessageCircle className="w-8 h-8 text-green-400" />
                   <span className="font-bold">WhatsApp</span>
                 </a>
-                <a href={`mailto:hello@4tek.dev?subject=Consultation&body=${emailPrefill}`} className="flex flex-col items-center gap-2 p-6 rounded-xl border-2 border-white/10 bg-white/5 hover:bg-white/10 text-white">
+                <a href={`mailto:automated@4tek.dev?subject=Consultation&body=${emailPrefill}`} className="flex flex-col items-center gap-2 p-6 rounded-xl border-2 border-white/10 bg-white/5 hover:bg-white/10 text-white">
                   <Mail className="w-8 h-8 text-blue-400" />
                   <span className="font-bold">Email Us</span>
                 </a>
