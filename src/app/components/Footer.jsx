@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Script from "next/script";
 import { Terminal, Github, Linkedin, Twitter, Instagram } from "lucide-react";
+import Solutions from "./Solutions";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -24,7 +25,7 @@ export default function Footer() {
       title: "Engineering",
       links: [
         { label: "API Documentation", href: "/api-ecosystem" },
-        { label: "Security Standards", href: "/security" },
+        { label: "Solutions", href: "/solutions" },
         { label: "Tech Stack", href: "/stack" },
       ],
     },
@@ -33,7 +34,6 @@ export default function Footer() {
       links: [
         { label: "About 4Tek", href: "/about" },
         { label: "Who needs Automations", href: "/who-this-is-for" },
-        { label: "Privacy Policy", href: "/privacy" },
         { label: "HTML Sitemap", href: "/sitemap.xml" },
       ],
     },
