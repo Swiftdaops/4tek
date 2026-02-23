@@ -46,7 +46,9 @@ export default function Footer() {
     >
       {/* decorative background image placed behind left content */}
       <img
-        src="https://res.cloudinary.com/dnitzkowt/image/upload/v1771120347/Gemini_Generated_Image_3l1res3l1res3l1r__1_-removebg-preview_le9f2i.png"
+        src={`/api/image?url=${encodeURIComponent(
+          "https://res.cloudinary.com/dnitzkowt/image/upload/v1771120347/Gemini_Generated_Image_3l1res3l1res3l1r__1_-removebg-preview_le9f2i.png"
+        )}`}
         alt="decorative background"
         aria-hidden="true"
         width="1024"
