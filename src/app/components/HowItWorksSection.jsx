@@ -2,11 +2,12 @@
 
 import React, { useState } from "react";
 import { Shield, Zap, Server } from "lucide-react";
-import { Swiper, SwiperSlide } from "swiper/react";
+import dynamic from "next/dynamic";
+const Swiper = dynamic(() => import('swiper/react').then((m) => m.Swiper), { ssr: false });
+const SwiperSlide = dynamic(() => import('swiper/react').then((m) => m.SwiperSlide), { ssr: false });
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 
 const ConsultationModal = dynamic(() => import("./ConsultationModal"), { ssr: false });
 

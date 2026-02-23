@@ -5,7 +5,8 @@ import TransitionWrapper from "./components/TransitionWrapper";
 import Footer from "./components/Footer";
 import StructuredData from "./components/JsonLd";
 import ChatWidget from "./components/ChatWidget";
-import { Analytics } from "@vercel/analytics/react";
+import dynamic from "next/dynamic";
+const LazyAnalytics = dynamic(() => import("./components/LazyAnalytics"), { ssr: false });
 
 const jetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -64,7 +65,7 @@ export default function RootLayout({ children }) {
         <TransitionWrapper>{children}</TransitionWrapper>
         <Footer />
         <ChatWidget />
-        <Analytics />
+        <LazyAnalytics />
       </body>
     </html>
   );

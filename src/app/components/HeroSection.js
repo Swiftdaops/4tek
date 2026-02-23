@@ -1,5 +1,7 @@
 "use client";
 
+import dynamic from "next/dynamic";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ShieldCheck, Zap } from "lucide-react";
@@ -103,18 +105,18 @@ const salesData = [
       <div className="absolute top-0 left-1/2 -z-20 h-[600px] w-[600px] -translate-x-1/2 rounded-full bg-blue-500/5 blur-[120px]" />
 
       {/* Background image layer above the gradient but below overlay */}
-      {(() => {
-        const bg = `/api/image?url=${encodeURIComponent(
-          "https://res.cloudinary.com/dnitzkowt/image/upload/v1771120347/Gemini_Generated_Image_3l1res3l1res3l1r__1_-removebg-preview_le9f2i.png"
-        )}`;
-        return (
-          <div
-            className="absolute inset-0 bg-center bg-cover bg-no-repeat z-0"
-            style={{ backgroundImage: `url('${bg}')` }}
-            aria-hidden
-          />
-        );
-      })()}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={`/api/image?url=${encodeURIComponent(
+            "https://res.cloudinary.com/dnitzkowt/image/upload/v1771120347/Gemini_Generated_Image_3l1res3l1res3l1r__1_-removebg-preview_le9f2i.png"
+          )}`}
+          alt=""
+          fill
+          sizes="100vw"
+          style={{ objectFit: "cover" }}
+          priority
+        />
+      </div>
 
       {/* Semi-opaque overlay for legibility */}
       <div className="absolute inset-0 bg-white/60 backdrop-blur-sm z-10" aria-hidden />
@@ -159,52 +161,13 @@ const salesData = [
           </motion.div>
         </div>
 
-        {/* Right Column: Visual Notification Stack */}
-        <motion.div
-          variants={itemVariants}
-          className="relative flex flex-col items-center justify-center h-48" // Set a fixed height for the container
-        >
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentIndex}
-              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.95 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="card absolute w-full max-w-[400px] border border-stone-950/10 bg-white/80 p-6 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)]"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  {/* PREMIUM 4TEK DEPOSIT ICON */}
-                  <div className="relative h-14 w-14 rounded-2xl bg-stone-950 flex items-center justify-center shadow-lg">
-                    <ShieldCheck className="text-white w-7 h-7" />
-                    <motion.div 
-                        animate={{ opacity: [0, 1, 0] }}
-                        transition={{ repeat: Infinity, duration: 2 }}
-                        className="absolute -top-1 -right-1 bg-blue-500 rounded-full p-1 shadow-md"
-                    >
-                        <Zap className="text-white w-3 h-3 fill-current" />
-                    </motion.div>
-                  </div>
-                  
-                  <div>
-                    <p className="text-[10px] text-stone-500 uppercase font-black tracking-[0.2em]">Verified Payment</p>
-                    <h3 className="text-2xl font-black text-lime-500">{salesData[currentIndex].amount}</h3>
-                  </div>
-                </div>
-                
-                <div className="text-right">
-                  <p className="text-sm font-bold text-stone-900">{salesData[currentIndex].country}</p>
-                  <p className="text-[10px] font-bold text-stone-800 uppercase tracking-tighter">{salesData[currentIndex].time}</p>
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-          
-          {/* Subtle Glow behind notifications */}
-          <div className="absolute -z-10 h-64 w-64 bg-blue-400/20 blur-[100px] rounded-full" />
-        </motion.div>
+        {/* Right Column: Visual Notification Stack (dynamically loaded to reduce initial JS) */}
+        <div className="relative flex flex-col items-center justify-center h-48">
+          <DynamicHeroNotifications currentIndex={currentIndex} salesData={salesData} />
+        </div>
       </motion.div>
     </section>
   );
 }
+
+const DynamicHeroNotifications = dynamic(() => import("./HeroNotificationsClient"), { ssr: false });
